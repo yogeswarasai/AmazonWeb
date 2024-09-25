@@ -1,0 +1,89 @@
+<div class="container fluid">
+  <header class="d-flex p-2 justify-content-between">
+    <div><h2>Amazon Shopping</h2></div>
+    <nav>
+      <button class="btn" (click)="categoryChanges('all')">home</button>
+      <button class="btn" (click)="categoryChanges('electronics')">Electronics</button>
+      <button class="btn" (click)="categoryChanges('mens clothing')">Mens Fashion</button>
+      <button class="btn" (click)="categoryChanges('womens clothing')">Women's Fashion</button>
+      <button class="btn" (click)="categoryChanges('jewelery')">Jewelery</button>
+    </nav>
+    <div>
+      <button class="btn"><span class="bi bi-search"></span></button>
+      <button class="btn"><span class="bi bi-heart"></span></button>
+      <button class="btn"><span class="bi bi-person"></span></button>
+      <button (click)="ToggleCart()" class="btn position-relative">
+        <span class="bi bi-cart"></span>
+        <span class="badge rounded-circle bg-danger text-white position-absolute">
+          {{cartItemsCount}}
+        </span>
+      </button>
+    </div>
+  </header>
+
+  <div class="bg-dark text-white text-center p-2 mt-2">
+    WELCOME TO ONLINE SHOPPING WORLD
+  </div>
+
+  <section class="mt-3 row">
+    <nav class="col-3">
+      <div>
+        <label for="form-label"><b>Select Category</b></label>
+        <div>
+          <select (change)="categoryChanges(category.value)" ngModel #category="ngModel" class="form-select">
+            <option *ngFor="let item of categories" [value]="item">{{item | uppercase}}</option>
+          </select>
+        </div>
+      </div>
+
+      <div *ngIf="isCartItemsVisible" class="mt-2">
+        <h4>Cart Items</h4>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Preview</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of cartItems; let i = index;">
+              <td>{{item.title}}</td>
+              <td><img [src]="item.image" width="50" height="50" alt=""></td>
+              <td>
+                <button (click)="RemoveItem(i)" class="btn btn-danger">
+                  <span class="bi bi-trash-fill"></span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </nav>
+
+    <main style="height:450px;" class="col-9 d-flex flex-wrap overflow-auto">
+      <div style="width:200px" *ngFor="let product of products" class="card p-2 m-2">
+        <img [src]="product.image" class="card-img-top" height="160px" alt="">
+        <div class="card-header" style="height:140px">
+          <p>{{product.title}}</p>
+        </div>
+        <div class="card-body">
+          <dl>
+            <dt>Price</dt>
+            <dd>{{product.price}}</dd>
+            <dt>Ratings</dt>
+            <dd>
+              <span class="bi bi-star-fill text-success">
+                {{product.rating.rate}} [{{product.rating.count}}]
+              </span>
+            </dd>
+          </dl>
+        </div>
+        <div class="card-footer">
+          <button (click)="AddToCart(product.id)" class="btn btn-info">
+            <span class="bi bi-cart">Add to Cart</span>
+          </button>
+        </div>
+      </div>
+    </main>
+  </section>
+</div>
